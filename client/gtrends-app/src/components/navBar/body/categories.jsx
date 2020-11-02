@@ -34,7 +34,7 @@ const Categories = () => {
                         </div>
                     </div>
                     <div class="input-field col s12">
-                        <input id="filter" type="text" class="validate center" onChange={e => {
+                        <input id="filter" type="text" class="validate center white-text flow-text" onChange={e => {
                             setCategories(e.target.value)
                         }} />
                         <label for="filter">¿Que estas buscando?</label>
