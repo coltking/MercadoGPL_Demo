@@ -6,13 +6,66 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 70px;
-    border: 1px solid white;
     font-family: "Times New Roman", Times, serif;
+}
+.lista-botones-contacto{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    max-width: 155px;
 }
 .btn-contact{
     font-family: "Times New Roman", Times, serif;
-    filter: blur(1px);
 }
-.btn-contact:hover{
-    filter: blur(0px);
+.footer {
+    position: fixed;
+    color: black;
+    border-color: black;
+}
+.footer:hover{
+    color: white;
+    border-color: white;
+}
+.volver{
+    margin-top: 200px;
+    font-size: 20px;
+    justify-content: center;
+    padding: 0px 20px;
+    background-color: transparent;
+    font-family: "Times New Roman", Times, serif;
+    border: 1px solid black ;
+    border-radius: 20px;
+}
+.volver:hover{
+    color: white;
+}
+.jsx{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background-color: rgb(31, 119, 180);
+    color: black;
+    border-radius: 15px;
+}
+.js{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background-color: rgb(241, 224, 90);
+    border-radius: 15px;
+}
+.css{
+    background-color:rgb(86, 61, 124);
+    color: white;
+    border-radius: 15px;
+}
+.json{
+    background-color:#3949ab;
+    color: white;
+    border-radius: 15px;
+}
+.html{
+    background-color:#ef5350;
+    color: white;
+    border-radius: 15px;
 }

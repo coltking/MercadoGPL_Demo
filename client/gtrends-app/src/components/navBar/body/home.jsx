@@ -4,11 +4,12 @@ import './home.css'
 const Home = () => {
 
     return (<div>
-        <div className='texto white-text welcomeContainer'>
-            <h1>Bienvenido a Mercado GPL</h1>
-            <h5>Busca un producto o haz click en categorias para iniciar.</h5>
+        <div className='texto'>
+            <br></br>
+            <h1 className='welcome'>Mercado GPL</h1>
+            <div className='sub-welcome'>Busca un producto o haz click en categorias para iniciar.</div>
         </div>
-        <a href='/contact' className='white-text footer btn'>-| Desarrollado por Juan Bautista Abal |-</a>
+        <a href='/contact' className='black-text footer btn'>Desarrollado por Juan Bautista Abal</a>
     </div>)
 
 }

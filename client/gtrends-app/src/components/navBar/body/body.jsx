@@ -5,27 +5,38 @@ import ProductCard from './productCard'
 import qs from 'query-string'
 import Product from './product';
 import 'materialize-css'
+import M from 'materialize-css'
 import './body.css'
 
 const Body = () => {
     const dispatch = useDispatch()
+    //////////////////////// SELECTORS
     const result = useSelector(store => store.reducer.searchResult)
     const resultFiltered = useSelector(store => store.reducer.searchResultFiltered)
     const loading = useSelector(store => store.reducer.loading)
+
+    //////////////////////// HOOKS
+    const [pageLimits, setPageLimits] = useState({ min: 0, max: 31 });
+    const [scroll, setScroll] = useState(0)
+
+    //////////////////////// OTROS
     const search = qs.parse(window.location.search).search;
     const category = qs.parse(window.location.search).category;
-    const [pageLimits, setPageLimits] = useState({ min: 0, max: 31 });
     useEffect(() => {
         LoadProducts()
         dispatch(actionCategories())
+        const sideNav = document.querySelectorAll('.sidenav-fixed')
+        M.Sidenav.init(sideNav)
     }, [])
+    window.scrollTo({ top: scroll, behavior: 'smooth' })
+
+    //////////////////////// FUNCIONES
     const LoadProducts = () => {
         if (search) {
             dispatch(actionSearch(search))
         }
         if (category) {
             dispatch(actionSetCategory(category))
-            console.log("carga la categoria: " + category);
         }
     }
     const sort = (term) => {
@@ -66,103 +77,78 @@ const Body = () => {
                 return undefined
         }
     }
+    /////////////////////// FIN FUNCIONES
+
     return (<div>
-        <Product style={{ display: 'none' }}></Product>
+        <Product scroll={scroll} style={{ display: 'none' }}></Product>
+        <div id='nav-mobile' className='sidenav sidenav-fixed'>
+            <ul>
+                <li>
+                    <a className='flow-text black-text bold'>Mercado GPL</a>
+                </li>
+            </ul>
+            <div class="collection">
+                <a class="collection-item waves-effect waves-light left black-text" href='#' data-target='nav-mobile' onClick={() => {
+                    sort('nameAsc')
+                    setScroll(0)
+                }}><i className='material-icons left'>sort_by_alpha</i>Nombre ascendente</a>
+                <a class="collection-item waves-effect waves-light left black-text" onClick={() => {
+                    sort('nameDesc')
+                    setScroll(0)
+                }}><i className='material-icons left'>sort_by_alpha</i>Nombre descendente</a>
+                <a className='collection-item waves-effect waves-light left black-text' onClick={() => {
+                    sort('priceAsc')
+                    setScroll(0)
+                }}><i className='material-icons left'>attach_money</i>Precio ascendente</a>
+                <a className='collection-item waves-effect waves-light left black-text' onClick={() => {
+                    sort('pricedesc')
+                    setScroll(0)
+                }}><i className='material-icons left'>attach_money</i>Precio descendente</a>
+                <a className='collection-item waves-effect waves-light left black-text' onClick={() => {
+                    sort('nuevo')
+                    setScroll(0)
+                }}><i className='material-icons left'>fiber_new</i>Filtrar nuevo</a>
+                <a className='collection-item waves-effect waves-light left black-text' onClick={() => {
+                    sort('usado')
+                    setScroll(0)
+                }}><i className='material-icons left'>new_releases</i>Filtrar usado</a>
+            </div>
+        </div>
         {
             <div className='container' id='container'>
                 <div className='row'>
-                    <div className='col s12 wrap' style={{ display: loading }}>
+                    <div className='col s12' style={{ display: loading }}>
                         <div class="progress">
-                            <div class="indeterminate"></div>
+                            <div class="indeterminate yellow darken-4"></div>
                         </div>
-                    </div>
-                    <div className='col s12'>
-                        <a className='col s12 m6 l4 btn waves-effect waves-light' onClick={() => {
-                            sort('nameAsc')
-                        }}>
-                            <i className='material-icons right'>sort_by_alpha</i>
-                                    nombre Ascendente
-                                    </a>
-                        <a className='col s12 m6 l4 btn waves-effect waves-light' onClick={() => {
-                            sort('nameDesc')
-                        }}>
-                            <i className='material-icons right'>sort_by_alpha</i>
-                                    nombre descendente
-                                    </a>
-                        <a className='col s12 m6 l4 btn waves-effect waves-light' onClick={() => {
-                            sort('priceAsc')
-                        }}>
-                            <i className='material-icons right'>attach_money</i>
-                                    Precio ascendente
-                                    </a>
-                        <a className='col s12 m6 l4 btn waves-effect waves-light' onClick={() => {
-                            sort('pricedesc')
-                        }}>
-                            <i className='material-icons right'>attach_money</i>
-                                    Precio descendente
-                                    </a>
-                        <a className='col s12 m6 l4 btn waves-effect waves-light' onClick={() => {
-                            sort('nuevo')
-                        }}>
-                            <i className='material-icons right'>filter_list</i>
-                                    Filtrar nuevo
-                                    </a>
-                        <a className='col s12 m6 l4 btn waves-effect waves-light' onClick={() => {
-                            sort('usado')
-                        }}>
-                            <i className='material-icons right'>filter_list</i>
-                                    Filtrar usado
-                                    </a>
                     </div>
 
                     {(resultFiltered.length === 0) ? (<div></div>
                     ) : (
-                            <div>
-                                <div className='col s12' style={{ marginTop: "5px" }}>
-                                    <div className='col s6'>
-                                        {(pageLimits.min >= 1) ? (<div id='menorque' className='btn scale-transition waves-effect waves-light' onClick={() => {
-                                            setPageLimits({ min: pageLimits.min - 30, max: pageLimits.max - 30 })
-                                        }}>
-                                            <div>pagina anterior</div>
-                                            <i className='material-icons'>arrow_back</i>
-                                        </div>) : (<a className='btn disabled z-depth-3 waves-effect waves-light'><div>pagina siguiente</div><i className='material-icons black-text'>arrow_back</i></a>)}
-                                    </div>
-                                    <div className='col s6 scale-transition'>
-                                        {(pageLimits.max < resultFiltered.length) ? (
-                                            <div className='row'>
-                                                <div id='scale-demo' className='btn scale-transition waves-effect waves-light' onClick={() => {
-                                                    setPageLimits({ min: pageLimits.min + 30, max: pageLimits.max + 30 })
-                                                }}>
-                                                    <div className='text'>pagina siguiente</div><i className='material-icons right'>arrow_forward</i>
-                                                </div>
-                                            </div>) : (
-                                                <div>
-                                                    <a className='btn disabled z-depth-3 waves-effect waves-light'><div>pagina siguiente</div><i className='material-icons black-text'>arrow_forward</i></a>
-                                                </div>
-                                            )}
-                                    </div>
-                                </div>
+                            <div className='col s12 m10 offset-m2 '>
                                 {
                                     resultFiltered.map((product, index) => {
                                         if (index < pageLimits.max && index > pageLimits.min) {
-                                            return <ProductCard product={product} />
+                                            return <ProductCard setScroll={setScroll} product={product} />
                                         }
                                     })
                                 }
 
                                 <div className='col s12'>
-                                    <div className='col s6'>
+                                    <div className='col s6 m4 offset-m1 xl4 offset-xl1'>
                                         {(pageLimits.min >= 1) ? (<div id='menorque' className='btn-floating scale-transition waves-effect waves-light' onClick={() => {
+                                            window.scrollTo({ top: 0, behavior: 'smooth' })
                                             setPageLimits({ min: pageLimits.min - 30, max: pageLimits.max - 30 })
                                         }}>
-                                            <i className='material-icons'>arrow_back</i>
+                                            <i className='material-icons black-text btn-floatinghov'>arrow_back</i>
                                         </div>) : (<a className='btn-floating disabled z-depth-3' waves-effect waves-light><i className='material-icons black-text'>arrow_back</i></a>)}
                                     </div>
-                                    <div className='col s6 scale-transition'>
+                                    <div className='col s6 m4 offset-m1 xl4 offset-xl1 scale-transition'>
                                         {(pageLimits.max < resultFiltered.length) ? (<div id='scale-demo' className='btn-floating scale-transition waves-effect waves-light' onClick={() => {
+                                            window.scrollTo({ top: 0, behavior: 'smooth' })
                                             setPageLimits({ min: pageLimits.min + 30, max: pageLimits.max + 30 })
                                         }}>
-                                            <i className='material-icons'>arrow_forward</i>
+                                            <i className='material-icons black-text btn-floatinghov'>arrow_forward</i>
                                         </div>) : (
                                                 <a className='btn-floating disabled z-depth-3 waves-effect waves-light'><i className='material-icons black-text'>arrow_forward</i></a>)}
                                     </div>

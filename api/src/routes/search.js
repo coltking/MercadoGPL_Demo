@@ -21,7 +21,6 @@ const cache = (duracion) => {
     }
 }
 server.get('/', cache(1000), (req, res, next) => {
-    console.log('jeje')
     if (req.query.term) {
         axios.get('https://api.mercadolibre.com/sites/MLA/search?q=' + req.query.term).then(resp => {
             const data = resp.data.results.map(item => {

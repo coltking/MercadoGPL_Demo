@@ -1,11 +1,11 @@
 
 import { CLEAR_PRODUCT, SEARCH_RESULT, SEARCH_RESULT_FILTERED, SET_CATEGORIES_FILTER, SET_CATEGORIES_LIST, SET_LOADING, SET_PRODUCT } from './constants'
 import axios from 'axios'
-const url = 'http://localhost:3000'
+const url = 'https://mercado-gpl.herokuapp.com'
 export const actionSearch = (term) => {
     return (dispatch) => {
         dispatch(actionSetLoading(true))
-        axios.get(url + '/search/?term=' + term, { withCredentials: true }).then(res => {
+        axios.get(url + '/search/?term=' + term).then(res => {
             dispatch({ type: SEARCH_RESULT, payload: res.data })
         }).then(() => {
             dispatch(actionSetLoading(false))
@@ -33,7 +33,7 @@ export const actionFilterResult = (result) => {
 export const actionSetProduct = (id, bool) => {
     return (dispatch) => {
         dispatch(actionSetLoading(true))
-        axios.get(url + '/search/galery/?term=' + id, { withCredentials: true }).then(res => {
+        axios.get(url + '/search/galery/?term=' + id).then(res => {
             dispatch({ type: SET_PRODUCT, payload: res.data })
         }).then(() => {
             dispatch(actionSetLoading(false))
@@ -56,7 +56,7 @@ export const actionSetLoading = (bool) => {
 }
 export const actionCategories = () => {
     return (dispatch) => {
-        axios.get(url + '/search/categories', { withCredentials: true }).then(resp => {
+        axios.get(url + '/search/categories').then(resp => {
             dispatch({ type: SET_CATEGORIES_LIST, payload: resp.data })
         })
     }
@@ -64,7 +64,7 @@ export const actionCategories = () => {
 export const actionSetCategory = (id) => {
     return (dispatch) => {
         dispatch(actionSetLoading(true))
-        axios.get(url + '/search/category/' + id, { withCredentials: true }).then(resp => {
+        axios.get(url + '/search/category/' + id).then(resp => {
             console.log("resp.data", resp.data);
             dispatch({ type: SEARCH_RESULT, payload: resp.data })
         }).then(() => {

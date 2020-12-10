@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import M from 'materialize-css'
 import './product.css'
-import { actionClearProduct } from '../../../redux/actions';
+import { actionClearProduct} from '../../../redux/actions';
 
-const Product = () => {
+const Product = ({scroll}) => {
     const dispatch = useDispatch()
     const product = useSelector(store => store.reducer.product);
     const loading = useSelector(store => store.reducer.loading);
-    const [pageLimits, setPageLimits] = useState(0);
     const mb = document.querySelectorAll('.materialboxed');
-    M.Materialbox.init(mb, {
-
-    })
+    M.Materialbox.init(mb)
+    const crsl = document.querySelectorAll(".carousel");
+    M.Carousel.init(crsl, { fullWidth: true, duration: 150 })
     return (
         <div>
             <div class="container" id='productContainer' style={{ display: 'none', marginTop: "10px" }}>
@@ -22,40 +21,36 @@ const Product = () => {
                             <div class="indeterminate"></div>
                         </div>
                     </div>
-                    <div className='col s3'>
-                        {(pageLimits >= 1) ? (<div id='menorque' className='btn-floating scale-transition' onClick={() => {
-                            setPageLimits(pageLimits - 1)
-                        }}>
-                            <i className='material-icons'>arrow_back</i>
-                        </div>) : (<a className='btn-floating disabled z-depth-3'><i className='material-icons'>arrow_back</i></a>)}
-                    </div>
-                    <div className='col s6'>
-                        <div className='btn-floating' style={{ borderRadius: "20px" }} onClick={() => {
-                            dispatch((actionClearProduct()));
-                            setPageLimits(0)
-                            document.getElementById('container').style.display = 'block'
-                            document.getElementById('productContainer').style.display = 'none'
-
-                        }}>
-                            <i className='material-icons'>close</i>
-                        </div>
-                    </div>
-                    <div className='col s3 scale-transition'>
-                        {(pageLimits <= product.length - 2) ? (<div id='scale-demo' className='btn-floating scale-transition' onClick={() => {
-                            setPageLimits(pageLimits + 1)
-                        }}>
-                            <i className='material-icons'>arrow_forward</i>
-                        </div>) : (
-                                <a className='btn-floating disabled z-depth-3'><i className='material-icons'>arrow_forward</i></a>)}
-                    </div>
                     {(product.length > 0) ? (
-                        <div className="col s12">
-                            <img src={product[pageLimits].secure_url} alt="" className="responsive-img card" style={{ borderRadius: "20px" }} />
+                        <div className='col s12'>
+
+                            <div className="col s12 m6 offset-m3">
+                                <div className='carousel carousel-slider center transparent z-depth-5'>
+                                    {product.map((img) => {
+                                        return (<div class="carousel-item">
+                                            <a href="#one!"><img className='img-rounded responsive-img imagen' src={img.secure_url} /></a>
+                                        </div>)
+                                    })}
+                                </div>
+                                <div className='black-text'><i className='material-icons left'>chevron_left
+                                </i>desliza para ver mas imagenes<i className='material-icons right'>chevron_right
+                                </i></div>
+                            </div>
                         </div>
                     ) : (
                             <div></div>
                         )
                     }
+                    <div className='col s6 offset-s3'>
+                        <div className='btn black-text' onClick={() => {
+                            dispatch((actionClearProduct()));
+                            document.getElementById('container').style.display = 'block'
+                            document.getElementById('productContainer').style.display = 'none'
+                            window.scrollTo({ top: scroll, behavior: 'smooth' })
+                        }}>
+                            REGRESAR<i className='material-icons left'>arrow_back</i>
+                        </div>
+                    </div>
                 </div>
 
             </div>

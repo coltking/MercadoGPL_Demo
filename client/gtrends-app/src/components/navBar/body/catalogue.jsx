@@ -1,8 +1,7 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 const Catalogue = () => {
-    const dispatch = useDispatch();
     const result = useSelector(store => store.reducer.searchResult);
     const loading = useSelector(store => store.reducer.loading);
 
